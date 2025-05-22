@@ -1,0 +1,17 @@
+name: Docker build
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-24.04
+    env:
+      DOCKER_REPO: ghcr.io/${{ github.repository }}
+      RUBY_VERSION: 3.4.4
+      NODE_VERSION: 22.16.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: ./build.sh
