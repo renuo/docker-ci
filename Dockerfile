@@ -16,3 +16,10 @@ RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz
     rm -rf /tmp/node-build-master
 
 ENV RAILS_ENV="test"
+
+ARG INSTALL_BROWSER="false"
+RUN if [ "$INSTALL_BROWSER" = "true" ]; then \
+      apt-get update -qq && \
+      apt-get install --no-install-recommends -y chromium chromium-driver  && \
+      rm -rf /var/lib/apt/lists /var/cache/apt/archives; \
+    fi

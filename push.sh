@@ -13,3 +13,4 @@ if [ -z "${NODE_VERSION:-}" ]; then
 fi
 
 docker push "${DOCKER_REPO}:ruby-${RUBY_VERSION}-node-${NODE_VERSION}"
+docker push "${DOCKER_REPO}:ruby-${RUBY_VERSION}-node-${NODE_VERSION}-browser"

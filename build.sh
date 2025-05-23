@@ -13,3 +13,5 @@ if [ -z "${NODE_VERSION:-}" ]; then
 fi
 
 docker build --build-arg RUBY_VERSION="$RUBY_VERSION" --build-arg NODE_VERSION="$NODE_VERSION" -t "${DOCKER_REPO}:ruby-${RUBY_VERSION}-node-${NODE_VERSION}" .
+
+docker build --build-arg INSTALL_BROWSER=true --build-arg RUBY_VERSION="$RUBY_VERSION" --build-arg NODE_VERSION="$NODE_VERSION" -t "${DOCKER_REPO}:ruby-${RUBY_VERSION}-node-${NODE_VERSION}-browser" .
