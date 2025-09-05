@@ -12,7 +12,7 @@ jobs:
     env:
       DOCKER_REPO: ghcr.io/${{ github.repository }}
       RUBY_VERSION: 3.4.5
-      NODE_VERSION: 22.18.0
+      NODE_VERSION: 22.19.0
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
