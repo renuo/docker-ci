@@ -1,5 +1,5 @@
 # This Dockerfile is designed for running the CI of Ruby on Rails projects
-ARG RUBY_VERSION=3.4.10
+ARG RUBY_VERSION=3.4.11
 FROM docker.io/library/ruby:$RUBY_VERSION
 
 RUN apt-get update -qq && \
