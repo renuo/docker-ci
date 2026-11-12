@@ -6,14 +6,16 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y postgresql-client libjemalloc2  && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install yarn and node
+# Install Node.js and Yarn
 ARG NODE_VERSION=24.22.3
 ARG YARN_VERSION=1.22.22
 ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+RUN ARCH=$(dpkg --print-architecture) && \
+    case "${ARCH}" in amd64) ARCH=x64 ;; esac && \
+    mkdir -p /usr/local/node && \
+    curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${ARCH}.tar.xz" | \
+    tar -xJ -C /usr/local/node --strip-components=1 && \
+    npm install -g yarn@$YARN_VERSION
 
 ENV RAILS_ENV="test"
 
