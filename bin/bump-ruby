@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <version>"
+  echo "Example: $0 3.4.13"
+  exit 1
+fi
+
+VERSION="$1"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+cd "${REPO_ROOT}"
+
+sed -i "s/ARG RUBY_VERSION=[0-9.]\+/ARG RUBY_VERSION=${VERSION}/" Dockerfile
+sed -i "s/RUBY_VERSION: [0-9.]\+/RUBY_VERSION: ${VERSION}/" .github/workflows/docker.yml
+
+git add Dockerfile .github/workflows/docker.yml
+
+if git diff --cached --quiet; then
+  echo "No changes to commit"
+else
+  git commit -m "Update Ruby to ${VERSION}"
+fi
+
+echo "Bumped Ruby to ${VERSION}"
