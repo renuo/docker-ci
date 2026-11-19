@@ -11,7 +11,17 @@ VERSION="$1"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-sed -i "s/ARG NODE_VERSION=[0-9.]\+/ARG NODE_VERSION=${VERSION}/" "${REPO_ROOT}/Dockerfile"
-sed -i "s/NODE_VERSION: [0-9.]\+/NODE_VERSION: ${VERSION}/" "${REPO_ROOT}/.github/workflows/docker.yml"
+cd "${REPO_ROOT}"
+
+sed -i "s/ARG NODE_VERSION=[0-9.]\+/ARG NODE_VERSION=${VERSION}/" Dockerfile
+sed -i "s/NODE_VERSION: [0-9.]\+/NODE_VERSION: ${VERSION}/" .github/workflows/docker.yml
+
+git add Dockerfile .github/workflows/docker.yml
+
+if git diff --cached --quiet; then
+  echo "No changes to commit"
+else
+  git commit -m "Update Node to ${VERSION}"
+fi
 
 echo "Bumped Node to ${VERSION}"
