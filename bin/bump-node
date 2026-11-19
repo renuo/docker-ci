@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <version>"
+  echo "Example: $0 24.22.3"
+  exit 1
+fi
+
+VERSION="$1"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+sed -i "s/ARG NODE_VERSION=[0-9.]\+/ARG NODE_VERSION=${VERSION}/" "${REPO_ROOT}/Dockerfile"
+sed -i "s/NODE_VERSION: [0-9.]\+/NODE_VERSION: ${VERSION}/" "${REPO_ROOT}/.github/workflows/docker.yml"
+
+echo "Bumped Node to ${VERSION}"
